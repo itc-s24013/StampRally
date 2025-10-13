@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/app/generated/prisma
+.env
+
+# IntelliJ / JetBrains IDE settings
+.idea/
+
+# Copilot plugin temp data
+.idea/copilot.data.migration.*

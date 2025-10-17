@@ -30,7 +30,7 @@ export default function QuestionMenu() {
                 {floors.map((floor) => (
                     <button
                         key={floor}
-                        onClick={() => router.push(`/question/${floor}`)}
+                        onClick={() => router.push(`/questions/${floor}`)}
                         className="w-32 h-32 bg-gray-300 rounded-lg flex flex-col items-center justify-center hover:bg-blue-200 transition">
                         <div className="bg-blue-300 w-full text-center font-bold py-1">
                             {floor}F

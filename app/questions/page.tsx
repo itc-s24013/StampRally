@@ -3,19 +3,22 @@
 
 import {useRouter} from "next/navigation";
 import {useSession} from "next-auth/react";
+import {useEffect} from "react";
 
 export default function QuestionMenu() {
     const router = useRouter();
     const {data: session, status} = useSession();
 
+    // ログインしていない場合はログインページにリダイレクト
+    useEffect(() => {
+        if (session) {
+            // ログイン済みなら問題一覧へ
+            router.push("/questions");
+        }
+    }, [session, router]);
+
     // ユーザーのログイン状況確認中の表示
     if (status === "loading") return <p>ログイン確認中</p>;
-
-    // ログインしていない場合はログインページにリダイレクト
-    if (!session) {
-        router.push("/");
-        return null;
-    }
 
     const floors = [1, 2, 3, 4, 5, 6];
 

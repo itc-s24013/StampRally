@@ -21,7 +21,7 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
 
     //  Supabase から問題データを取得
     const { data, error } = await supabase
-        .from("Questions") // 👈 テーブル名（大文字なら注意）
+        .from("Questions") // テーブル名（大文字なら注意）
         .select("*")
         .eq("id", id)
         .single();

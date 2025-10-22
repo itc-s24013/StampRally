@@ -1,13 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
-/*
-このファイル構造で
-/api/auth/signin → ログイン画面
-/api/auth/signout → ログアウト
-/api/auth/session → セッション確認
-が自動で動くようになるらしい
- */
+import { PrismaAdapter } from "@next-auth/prismaClient-adapter";
+import { prismaClient } from "@/lib/prismaClient";
 
 const handler = NextAuth({
     providers: [

@@ -1,0 +1,17 @@
+.square {
+    width: 200px;
+    height: 200px;
+    background-color: #ABD2E2;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 0;
+    border: 1px solid #A2A1A1;
+}
+@media (max-width: 640px) {
+    .square {
+        width: 100px;
+        height: 100px;
+        padding: 30px 0;
+    }
+}

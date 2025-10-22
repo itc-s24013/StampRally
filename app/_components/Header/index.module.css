@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(177, 177, 177);
+    padding: 30px;
+}
+.title {
+    font-size: 2rem;
+    color: black;
+}
+@media (max-width: 640px) {
+    .heder {
+        padding: 24px 16px 8px;
+    }
+}

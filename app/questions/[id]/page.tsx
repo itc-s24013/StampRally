@@ -21,7 +21,7 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
 
     //  Supabase から問題データを取得
     const { data, error } = await supabase
-        .from("Questions") // テーブル名（大文字なら注意）
+        .from("Questions")
         .select("*")
         .eq("id", id)
         .single();
@@ -48,10 +48,29 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
         <main style={{ padding: "2rem" }}>
             <h1>問題 {data.id}</h1>
             <p style={{fontSize:"1.2rem", margin: "1rem 0"}}>{data.question_text}</p>
-            <label><input type="radio" name="test" value="0"/>{data.option_a}</label>
-            <label><input type="radio" name="test" value="1"/>{data.option_b}</label>
-            <label><input type="radio" name="test" value="2"/>{data.option_c}</label>
-            <label><input type="radio" name="test" value="3"/>{data.option_d}</label>
+            <form action="/api/answer" method="POST">
+                <input type="hidden" name="id" value={data.id} />
+
+                <label style={{ display: "block", marginBottom: "8px" }}>
+                    <input type="radio" name="answer" value="1" /> {data.option_a}
+                </label>
+                <label style={{ display: "block", marginBottom: "8px" }}>
+                    <input type="radio" name="answer" value="2" /> {data.option_b}
+                </label>
+                <label style={{ display: "block", marginBottom: "8px" }}>
+                    <input type="radio" name="answer" value="3" /> {data.option_c}
+                </label>
+                <label style={{ display: "block", marginBottom: "8px" }}>
+                    <input type="radio" name="answer" value="4" /> {data.option_d}
+                </label>
+
+                <button
+                    type="submit"
+                    style={{ display: "block", marginTop: "1rem" }}
+                >
+                    回答を送信
+                </button>
+            </form>
         </main>
     );
 }

@@ -3,13 +3,14 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
+import AnswerForm from "@/app/_components/AnswerForm";
 
 interface QuestionPageProps {
     params: Promise<{ id: string }>;
 }
 
 export default async function QuestionPage({ params }: QuestionPageProps) {
-    const { id } = await params;
+    const {id} = await params;
 
     const cookieStore = await cookies();
     const authCookie = cookieStore.get(`auth_question_${id}`);
@@ -45,32 +46,6 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
     }
 
     return (
-        <main style={{ padding: "2rem" }}>
-            <h1>問題 {data.id}</h1>
-            <p style={{fontSize:"1.2rem", margin: "1rem 0"}}>{data.question_text}</p>
-            <form action="/api/answer" method="POST">
-                <input type="hidden" name="id" value={data.id} />
-
-                <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="1" /> {data.option_a}
-                </label>
-                <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="2" /> {data.option_b}
-                </label>
-                <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="3" /> {data.option_c}
-                </label>
-                <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="4" /> {data.option_d}
-                </label>
-
-                <button
-                    type="submit"
-                    style={{ display: "block", marginTop: "1rem" }}
-                >
-                    回答を送信
-                </button>
-            </form>
-        </main>
+        <AnswerForm data={data}/>
     );
 }

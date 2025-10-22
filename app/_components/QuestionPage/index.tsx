@@ -11,27 +11,6 @@ type questionData = {
         }
 }
 
-const questionsData : questionData[] =[
-    {
-        id: 1,
-        password: "12345",
-        questionDescription: {
-            title: "第1問",
-            content: "*****",
-            answer: "***"
-        }
-    },
-    {
-        id: 2,
-        password: "123456",
-        questionDescription: {
-            title: "第2問",
-            content: "*****",
-            answer: "***"
-        }
-    }
-]
-
 export default function  QuestionPage(question: questionData)  {
 
     return (

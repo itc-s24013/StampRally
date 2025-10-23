@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Question } from "@/lib/types";
+import Card from "@/app/_components/Card";
 
 export default function QuestionsPage() {
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -33,6 +34,7 @@ export default function QuestionsPage() {
                         {q.id}F
                     </div>
                     {/*<p>{q.question_text}</p>*/}
+                    <Card id={q.id} />
                 </button>
                 ))}
             </div>

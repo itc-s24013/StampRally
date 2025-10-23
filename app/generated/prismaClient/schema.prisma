@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prismaClient"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Answers {
+  id          BigInt    @id @unique @default(autoincrement())
+  user_id     String    @unique @db.Uuid
+  question_id BigInt
+  answer      String
+  answered_at DateTime? @db.Timestamptz(6)
+  Questions   Questions @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Students    Students  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Questions {
+  id             BigInt    @id(map: "Question_pkey") @unique(map: "Question_id_key") @default(autoincrement())
+  question_text  String
+  correct_answer String
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
+  password       String    @unique
+  option_a       String
+  option_b       String
+  option_c       String
+  option_d       String
+  Answers        Answers[]
+  Stamps         Stamps?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Stamps {
+  id           BigInt    @id @unique @default(autoincrement())
+  user_id      String    @unique @db.Uuid
+  questions_id BigInt    @unique
+  obtained     Boolean   @default(true)
+  obtained_at  DateTime  @db.Timestamptz(6)
+  Questions    Questions @relation(fields: [questions_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Students     Students  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Students {
+  id         String   @id(map: "students_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  emeil      String   @unique(map: "students_sutudent_id_key")
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  total_time BigInt?
+  Answers    Answers?
+  Stamps     Stamps?
+}

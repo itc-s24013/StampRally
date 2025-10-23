@@ -5,7 +5,7 @@ import supabase from "@/lib/supabaseClient";
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
-    const { data, error } = await supabase.from("Users").insert([{ email }]);
+    const { data, error } = await supabase.from("").upsert([{ email }]);
 
     if (error) throw error;
     return NextResponse.json({ success: true, data });

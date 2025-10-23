@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -8,53 +7,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Answers {
-  id          BigInt    @id @unique @default(autoincrement())
-  user_id     String    @unique @db.Uuid
-  question_id BigInt
-  answer      String
-  answered_at DateTime? @db.Timestamptz(6)
-  Questions   Questions @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Students    Students  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+/// ユーザ情報を管理するモデル
+model User {
+  id            String    @id @default(uuid()) @db.Uuid
+  name          String?
+  email         String?   @unique
+
+  // 時間情報
+  created_at    DateTime  @default(now()) @db.Timestamptz(6) // ユーザー登録日時
+  total_time    Int?      // 合計時間（秒）
+
+  // 関連モデルとのバックリレーション
+  accounts      Account[] // Accountが直接Userを参照
+  Stamps        Stamps[] // ユーザのスタンプ記録を参照
+  StampRallyLog StampRallyLog[] // スタンプラリー計測ログを参照
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// OAuth認証に関するモデル
+model Account {
+  id                String  @id @default(cuid())  //作成日時順でソートしやすく、UUIDよりも短い
+  userId            String  @db.Uuid
+
+  // 認証情報
+  type              String  @default("oauth") // 認証のタイプ googleなら常にoauth
+  provider          String  @default("google")  // 認証プロバイダ googleのみ対応
+  providerAccountId String  // プロバイダ内でのユーザID
+
+  // OAuthトークン情報
+  access_token      String? // google(gmail api)のアクセスに必要なトークン
+  refresh_token     String? // 期限切れのaccess_tokenを再ログインなしで新しく交換するトークン
+  expires_at        Int?  // access_tokenの有効期限(UNIXタイムスタンプ)
+
+  // Userとのリレーション
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+/// 問題情報を管理するモデル
 model Questions {
-  id             BigInt    @id(map: "Question_pkey") @unique(map: "Question_id_key") @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   question_text  String
-  correct_answer String
-  created_at     DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
-  password       String    @unique
+  correct_answer Int  // 正解の選択肢番号 (1-4)
+
+  // 時間情報
+  created_at     DateTime  @default(now()) @db.Timestamptz(6) // 問題作成日時
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6) // 問題更新日時
+
+  password       String    @unique  // 問題のパスワード
+
+  // 選択肢情報
   option_a       String
   option_b       String
   option_c       String
   option_d       String
-  Answers        Answers[]
-  Stamps         Stamps?
+
+  Stamps         Stamps[] // ユーザのスタンプ記録
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// スタンプ取得状況を管理するモデル
 model Stamps {
-  id           BigInt    @id @unique @default(autoincrement())
-  user_id      String    @unique @db.Uuid
-  questions_id BigInt    @unique
-  obtained     Boolean   @default(true)
-  obtained_at  DateTime  @db.Timestamptz(6)
-  Questions    Questions @relation(fields: [questions_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Students     Students  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int       @id @unique @default(autoincrement())
+  user_id      String    @db.Uuid // 誰がスタンプを取得したか示す外部キー
+  questions_id Int       // どの問題に対するスタンプか示す外部キー
+
+  // スタンプを取得したかどうか 初期値: false
+  obtained     Boolean   @default(false)
+
+  // スタンプを取得した日時 取得していない場合はnull
+  obtained_at  DateTime?  @db.Timestamptz(6)
+
+  // 関連モデルとのリレーション
+  Questions    Questions @relation(fields: [questions_id], references: [id])  //関連する問題情報
+  User         User      @relation(fields: [user_id], references: [id]) //関連するユーザ情報
+
+  @@unique([user_id, questions_id])
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Students {
-  id         String   @id(map: "students_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  emeil      String   @unique(map: "students_sutudent_id_key")
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  total_time BigInt?
-  Answers    Answers?
-  Stamps     Stamps?
+/// スタンプラリーのログを管理するモデル
+model StampRallyLog {
+  id Int @id @default(autoincrement())
+  user_id String @db.Uuid
+
+  // 時間情報
+  start_time DateTime @db.Timestamptz(6) // 計測開始時刻 (Q1を開いたとき)
+  end_time DateTime? @db.Timestamptz(6) // 計測終了時刻 (Q6を解き終わったとき)
+  duration_sec Int? // 実際にかかったセッション時間（秒）
+
+  // スタンプラリーを完走したかどうか
+  is_completed Boolean @default(false)
+
+  // 関連モデルとのリレーション
+  User User @relation(fields: [user_id], references: [id])
 }

@@ -1,5 +1,7 @@
 "use client"
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 type dataType = {
     data: {
         id: number,
@@ -15,33 +17,13 @@ type dataType = {
 export default function AnswerForm({data}: dataType) {
     const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault(); // ページリロードを防ぐ
-
-        // 1. ボタンが属するフォーム要素を取得
-        const form = e.currentTarget.form;
-        if (!form) {
-            console.log("エラー: フォーム要素が見つかりません。");
-            return;
-        }
-
-        // 2. FormData APIを使ってフォーム内の全データを取得
-        const formData = new FormData(form);
-
-        // 3. name="answer" の値（選択されたラジオボタンのvalue）を抽出
-        const selectedAnswerValue = formData.get("answer") as string | null;
-
-        if (selectedAnswerValue) {
-            // 取得した値をコンソールに出力
-            console.log("✅ 取得した選択値 (value):", selectedAnswerValue);
-        } else {
-            console.log("ラジオボタンが選択されていません。");
-        }
     }
 
     return (
         <main style={{ padding: "2rem" }}>
     <h1>問題 {data.id}</h1>
     <p style={{fontSize:"1.2rem", margin: "1rem 0"}}>{data.question_text}</p>
-    <form action="/api/answer" method="POST">
+    <form action="/api/record/answer" method="POST">
     <input type="hidden" name="id" value={data.id} />
 
     <label style={{ display: "block", marginBottom: "8px" }}>
@@ -59,7 +41,7 @@ export default function AnswerForm({data}: dataType) {
 
         <button
     type="submit"
-    style={{ display: "block", marginTop: "1rem" }}
+    className="btn btn-outline-primary"
     onClick={handleSubmit}
         >
         回答を送信

@@ -69,14 +69,14 @@ export default function AnswerForm({data}: dataType) {
                 <label style={{ display: "block", marginBottom: "8px" }}>
                     <input type="radio" name="answer" value="4" checked={selected==="4"} onChange={handleChange} className="form-check-input"/> {data.option_d}
                 </label>
+                <BackListButton onClick={() => router.push('http://localhost:3000/questions')} />
                 <button
                     type="submit"
-                    className="btn btn-outline-secondary mx-2"
+                    className="btn btn-outline-primary"
                     disabled={!selected}
                 >
                     回答を送信
                 </button>
-                <BackListButton onClick={() => router.push('http://localhost:3000/questions')} />
             </form>
             {result && (
                 <div style={{marginTop: "1rem", fontWeight: "bold"}}>

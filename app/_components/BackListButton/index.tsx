@@ -9,7 +9,7 @@ import styles from './index.module.css';
 export const BackListButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
         // スタイルクラスは、例としてCSS Moduleから読み込む形にする
-        <button className={styles.backButton} onClick={onClick}>
+        <button className="btn btn-outline-primary" onClick={onClick}>
             一覧へ戻る
         </button>
     );

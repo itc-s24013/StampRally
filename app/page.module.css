@@ -1,26 +1,24 @@
-.page {
-    /* ビューポート全体を覆う */
-    min-height: 100vh;
-    width: 100vw;
-
-    /* Flexboxでコンテンツを中央に配置 */
-    display: flex;
-    justify-content: center; /* 水平方向の中央 */
-    align-items: center;    /* 垂直方向の中央 */
-
-    /* 背景とフォントの基本設定 */
-    background-color: #f7f9fc; /* わずかに青みがかった明るい背景 */
-    font-family: 'Inter', sans-serif;
+.container {
+    position: relative;
+    background-color: rgb(230, 230, 230);
+    width: 50%;
+    height: 80%;
+    margin: 40px auto;
+    padding: 80px;
 }
-
-/* 補足: ログインボタン（LoginButton.tsx）のスタイルは、
-   通常、そのコンポーネント自身のCSSファイルやインラインスタイルで定義されます。
-   ここでは、親コンテナである .page の配置のみを定義しています。
-*/
-
-/* ページのタイトルなど、他の要素を追加する場合の例 */
-.title {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 20px;
+.stampcard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 30px;
+}
+.centerText {
+    text-align: center;
+    padding-top: 10px;
+}
+@media (max-width: 640px) {
+    .container {
+        padding: 24px 16px;
+        width: 80%;
+    }
 }

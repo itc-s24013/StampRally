@@ -40,16 +40,20 @@ export default function PasswordAuthPage({ params }: PasswordAuthPageProps) {
     };
 
     return (
-        <div style={{ textAlign: "center", marginTop: "60px" }}>
-            <h2>{resolvedParams.id} 階の問題パスワードを入力してください</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="top-50">
+            <br />
+            <h2 className="text-center">{resolvedParams.id} 階の問題パスワードを入力してください</h2>
+            <br />
+            <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
                 <input
+                    className="form-control w-50"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="パスワード"
                 />
-                <button type="submit" style={{ marginLeft: "10px" }}>確定</button>
+                <br />
+                <button type="submit" className="btn btn-outline-primary">確定</button>
             </form>
             {errorMessage && <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>}
         </div>

@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
+import {BackListButton} from "@/app/_components/BackListButton";
+import {router} from "next/client";
 
 type dataType = {
     data: {
@@ -79,6 +81,7 @@ export default function AnswerForm({data}: dataType) {
                     {result}
                 </div>
             )}
+            <BackListButton onClick={() => router.push('../')} />
         </main>
     )
 }

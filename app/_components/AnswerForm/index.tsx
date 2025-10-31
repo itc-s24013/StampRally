@@ -43,6 +43,11 @@ export default function AnswerForm({data}: dataType) {
             const json = await res.json();
             if (json.success) {
                 setResult(json.message);
+                if(result === "残念...不正解") {
+                    router.push('http://localhost:3000/questions/incorrect')
+                    return;
+                }
+                router.push('http://localhost:3000/questions/correct')
             } else {
                 setResult(json.error || "エラーが発生しました");
             }
@@ -78,11 +83,6 @@ export default function AnswerForm({data}: dataType) {
                     回答を送信
                 </button>
             </form>
-            {result && (
-                <div style={{marginTop: "1rem", fontWeight: "bold"}}>
-                    {result}
-                </div>
-            )}
         </main>
     )
 }

@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Question } from "@/lib/types";
+import { QuestionDTO } from "@/lib/types";
 import LogoutBotton from "@/app/_components/LogoutBotton";
 
 export default function QuestionsPage() {
-    const [questions, setQuestions] = useState<Question[]>([]);
+    const [questions, setQuestions] = useState<QuestionDTO[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 

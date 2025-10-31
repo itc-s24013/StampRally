@@ -20,6 +20,8 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
         redirect(`/questions/${id}/auth`);
     }
 
+    const userId = authCookie.value ?? ""; // クッキーからユーザーIDを取得
+
     //  Supabase から問題データを取得
     const { data, error } = await supabase
         .from("Questions")
@@ -46,6 +48,6 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
     }
 
     return (
-        <AnswerForm data={data}/>
+        <AnswerForm question={data} userId={userId!}/>
     );
 }

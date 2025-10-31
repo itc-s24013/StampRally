@@ -33,7 +33,7 @@ export async function POST() {
 export async function GET() {
     const { data, error } = await supabase
         .from("Questions")
-        .select("*");
+        .select("id, question_text, created_at, updated_at, option_a, option_b, option_c, option_d");
     if (error) {
         console.error(error);
         return NextResponse.json({ error: error.message }, { status: 500 });

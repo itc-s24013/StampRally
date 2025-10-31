@@ -2,20 +2,16 @@
 
 import React, { useState } from "react"
 import {BackListButton} from "@/app/_components/BackListButton";
+import { QuestionDTO } from '@/lib/types';
 import { useRouter } from 'next/navigation'
-type dataType = {
-    data: {
-        id: number,
-        question_text: string,
-        correct_answer: string,
-        option_a: string,
-        option_b: string,
-        option_c: string,
-        option_d: string,
-    }
+
+// 問題テーブルの型定義　正答をフロントに含んだらだめらしい
+interface AnswerFormProps {
+    question: QuestionDTO;
+    userId: string;
 }
 
-export default function AnswerForm({data}: dataType) {
+export default function AnswerForm({question, userId}: AnswerFormProps) {
     const [selected, setSelected] = useState<string>("");
     const [result, setResult] = useState<string>("");
 
@@ -29,11 +25,17 @@ export default function AnswerForm({data}: dataType) {
         e.preventDefault();
         setResult(""); // 送信前にリセット
 
+        // userId が無ければ送信しない
+        if (!userId) {
+            setResult("ユーザーIDが取得できません。ログインしてください。");
+            return;
+        }
+
         const formData = new FormData();
-        formData.append("questionId", String(data.id));
+        formData.append("questionId", String(question.id));
         formData.append("userAnswer", selected);
         // 仮のUUID（本番は認証情報から取得してください）
-        formData.append("userId", "00000000-0000-0000-0000-000000000000");
+        formData.append("userId", userId);
 
         try {
             const res = await fetch("/api/record/answer", {
@@ -57,21 +59,21 @@ export default function AnswerForm({data}: dataType) {
 
     return (
         <main className="text-center">
-            <h1>問題 {data.id}</h1>
-            <p style={{fontSize:"1.2rem", margin: "1rem 0"}}>{data.question_text}</p>
+            <h1>問題 {question.id}</h1>
+            <p style={{fontSize:"1.2rem", margin: "1rem 0"}}>{question.question_text}</p>
             <form onSubmit={handleSubmit}>
-                <input type="hidden" name="id" value={data.id} />
+                <input type="hidden" name="id" value={question.id} />
                 <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="1" checked={selected==="1"} onChange={handleChange} className="form-check-input"/> {data.option_a}
+                    <input type="radio" name="answer" value="1" checked={selected==="1"} onChange={handleChange} className="form-check-input"/> {question.option_a}
                 </label>
                 <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="2" checked={selected==="2"} onChange={handleChange} className="form-check-input"/> {data.option_b}
+                    <input type="radio" name="answer" value="2" checked={selected==="2"} onChange={handleChange} className="form-check-input"/> {question.option_b}
                 </label>
                 <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="3" checked={selected==="3"} onChange={handleChange} className="form-check-input"/> {data.option_c}
+                    <input type="radio" name="answer" value="3" checked={selected==="3"} onChange={handleChange} className="form-check-input"/> {question.option_c}
                 </label>
                 <label style={{ display: "block", marginBottom: "8px" }}>
-                    <input type="radio" name="answer" value="4" checked={selected==="4"} onChange={handleChange} className="form-check-input"/> {data.option_d}
+                    <input type="radio" name="answer" value="4" checked={selected==="4"} onChange={handleChange} className="form-check-input"/> {question.option_d}
                 </label>
                 <BackListButton onClick={() => router.push('http://localhost:3000/questions')} />
                 <button

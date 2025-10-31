@@ -30,7 +30,9 @@ export async function POST(request: Request) {
         /* error  クエリ結果でエラー情報を格納するためのプロパティ名として仕様で定義されている。
                   正常の場合は値がnullになる
          */
-        const { error } = await supabase.from('"Students"').insert([{ email }]);
+        const { error } = await supabase
+            .from("Users")
+            .upsert([{ email }], { onConflict: "email" });
 
         if (error) {
             console.error("Supabase登録エラー:", error.message);

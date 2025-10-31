@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
 import supabase from '@/lib/supabaseClient';
+import { getUserIdSimple } from "@/lib/auth";
 
 // POSTリクエストで回答を受け取り、判定・保存する
 export async function POST(request: Request) {
     const formData = await request.formData();
     const questionId = formData.get("questionId") as string | null;
     const userAnswer = formData.get("userAnswer") as string | null;
-    const userId = formData.get("userId") as string | null;
+
+    // userIdを取得 → lib/auth.tsにまとめた
+    const userId = await getUserIdSimple(request);
+    if (!userId) {
+        return new Response(JSON.stringify({ error: "userId が取得できません" }), { status: 401 });
+    }
+    console.log("取得したuserId:", userId);
 
     // パラメータチェック
     if (!questionId || userAnswer === null || !userId) {
@@ -37,9 +44,6 @@ export async function POST(request: Request) {
     const isCorrect = userAnswerNum === correctAnswerNum;
 
     let stampObtained = false;
-
-    // --- 4. 回答履歴をAnswersテーブルに保存（AnswersテーブルはPrisma定義にないので省略） ---
-    // 必要ならここで回答履歴保存の処理を追加
 
     // --- 5. 正解の場合、Stampsテーブルにスタンプを付与 ---
     if (isCorrect) {

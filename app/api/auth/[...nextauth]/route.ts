@@ -15,6 +15,21 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
 
+    callbacks: {
+        // 初回サインイン時にuser.idをtokenに保存
+        async jwt({ token, user }) {
+            if (user?.id) (token as any).id = (user as any).id;
+            return token;
+        },
+        // クライアント/サーバーで使うsession.userにidを追加
+        async session({ session, token }) {
+            if ((token as any).id) {
+                session.user = { ...session.user, id: (token as any).id as string };
+            }
+            return session;
+        },
+    },
+
     events: {
         // ✅ サインイン時に自動で呼ばれる
         async signIn({ user, account, profile }: { user: User; account: Account | null; profile?: Profile }) {

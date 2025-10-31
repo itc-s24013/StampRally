@@ -5,7 +5,7 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server"; // jsonレスポンスを返す
-import  supabase  from "@/lib/supabaseClient"; // データベース操作を行う
+import  supabaseAdmin  from "@/lib/supabaseAdmin"; // データベース操作を行う
 
 export async function POST(request: Request) {
     try {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
         }
 
         // Googleアカウント登録処理
-        const { data: existing } = await supabase
+        const { data: existing } = await supabaseAdmin
             .from('Users')
             .select("id")
             .eq("email", email)
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         /* error  クエリ結果でエラー情報を格納するためのプロパティ名として仕様で定義されている。
                   正常の場合は値がnullになる
          */
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
             .from("Users")
             .upsert([{ email }], { onConflict: "email" });
 

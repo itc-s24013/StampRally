@@ -35,7 +35,8 @@ export default function QuestionsPage() {
         const fetchQuestions = async () => {
             const res = await fetch("/api/questionRegistry"); // Supabaseから取るAPI
             const data = await res.json();
-            setQuestions(data.data || []);
+            console.dir(data)
+            setQuestions(data || []);
             setLoading(false);
         };
         fetchQuestions();

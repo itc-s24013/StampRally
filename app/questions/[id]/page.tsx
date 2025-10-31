@@ -1,8 +1,6 @@
 // 問題詳細画面
-
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import supabase from "@/lib/supabaseClient";
 import AnswerForm from "@/app/_components/AnswerForm";
 
 interface QuestionPageProps {
@@ -23,18 +21,21 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
     const userId = authCookie.value ?? ""; // クッキーからユーザーIDを取得
 
     //  Supabase から問題データを取得
-    const { data, error } = await supabase
-        .from("Questions")
-        .select("*")
-        .eq("id", id)
-        .single();
+    // const { data, error } = await supabase
+    //     .from("Questions")
+    //     .select("*")
+    //     .eq("id", id)
+    //     .single();
 
-    if (error) {
-        console.error("❌ Supabase error:", error);
+    const res = await fetch(`http://localhost:3000/api/questions/${id}`)
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok) {
+        console.error("❌ Supabase error:", res.status);
         return (
             <main style={{ padding: "2rem" }}>
                 <h1>問題の取得に失敗しました</h1>
-                <p style={{ color: "red" }}>{error.message}</p>
+                <p style={{ color: "red" }}>{res.status}</p>
             </main>
         );
     }

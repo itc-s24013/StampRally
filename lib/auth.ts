@@ -1,6 +1,7 @@
 // ユーザーIDの型チェックと取得ユーティリティ
 
 import { getServerSession } from "next-auth/next";
+import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import type { JWT } from "next-auth/jwt";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -15,7 +16,7 @@ export async function getUserIdSimple(request: Request): Promise<string | undefi
     if (typeof idFromSession === "string") return idFromSession;
 
     const token = (await getToken({
-        req: request as unknown as Request,
+        req: request as NextRequest,
         secret: process.env.NEXTAUTH_SECRET,
     })) as JWT | null;
 

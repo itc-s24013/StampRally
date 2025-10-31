@@ -63,6 +63,7 @@ model Questions {
   updated_at     DateTime  @default(now()) @db.Timestamptz(6) // 問題更新日時
 
   password       String    @unique  // 問題のパスワード
+  floor          Int
 
   // 選択肢情報
   option_a       String

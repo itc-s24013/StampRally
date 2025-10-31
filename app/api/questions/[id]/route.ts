@@ -1,7 +1,7 @@
 // 問題詳細を取得するAPI
 
 import { NextResponse } from 'next/server';
-import supabase from '@/lib/supabaseClient';
+import supabaseAdmin from '@/lib/supabaseAdmin';
 
 type QuestionProps = {
     params:{
@@ -11,7 +11,7 @@ type QuestionProps = {
 
 export async function GET({ params }: QuestionProps) {
     const { id } = params;
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from("questions")
         .select("*")
         .eq("id", id) // ページごとの問題だけとってくる

@@ -1,10 +1,10 @@
 // app/api/test/route.ts
-import supabase from "@/lib/supabaseClient";
+import supabaseAdmin from "@/lib/supabaseAdmin";
 import { NextResponse } from "next/server";
 
 // 問題登録時のみ使用
 export async function POST() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from("Questions")
         .insert([{ question_text: "赤嶺先生の趣味はなんでしょう？", correct_answer: "2", password: "question1",
             option_a: "1. 読書", option_b: "2. キングス観戦", option_c: "3. ビリヤード", option_d: "4. 釣り" },
@@ -31,12 +31,19 @@ export async function POST() {
 }
 
 export async function GET() {
-    const { data, error } = await supabase
-        .from("Questions")
-        .select("*");
-    if (error) {
-        console.error(error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    try {
+        const { data, error } = await supabaseAdmin
+            .from("Questions")
+            .select("*");
+        if (error) throw error;
+        return NextResponse.json(data);
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            console.error(err.message);
+            return NextResponse.json({ error: err.message }, { status: 500 });
+        } else {
+            console.error(err);
+            return NextResponse.json({ error: "Unknown error" }, { status: 500 });
+        }
     }
-    return NextResponse.json({ success: true, data });
 }

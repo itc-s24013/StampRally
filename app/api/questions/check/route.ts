@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import supabase from "@/lib/supabaseClient";
+import supabaseAdmin from "@/lib/supabaseAdmin";
 
 // 問題のパスワード認証を行うAPI
 export async function POST(request: Request) {
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     // 該当の問題を取得
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from("Questions")
         .select("password") // パスワードのみ取得
         .eq("id", id) // idが一致する行を探す

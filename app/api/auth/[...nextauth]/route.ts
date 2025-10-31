@@ -15,6 +15,26 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
 
+    callbacks: {
+        // JWTを生成・更新するときに呼ばれる
+        async jwt({ token, user }) {
+            if (user) {
+                // PrismaのUser.idをJWTに格納（新規ログイン時のみuserが存在する）
+                token.id = user.id;
+            }
+            return token;
+        },
+
+        // セッションをクライアントに返すときに呼ばれる
+        async session({ session, token }) {
+            if (session.user && token.id) {
+                // JWTからユーザーIDをセッションに渡す
+                session.user.id = token.id as string;
+            }
+            return session;
+        },
+    },
+
     events: {
         // ✅ サインイン時に自動で呼ばれる
         async signIn({ user, account, profile }: { user: User; account: Account | null; profile?: Profile }) {

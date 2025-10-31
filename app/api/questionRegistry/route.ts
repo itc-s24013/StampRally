@@ -1,4 +1,4 @@
-// app/api/test/route.ts
+// app/api/questionRegistry/route.ts
 import supabaseAdmin from "@/lib/supabaseAdmin";
 import { NextResponse } from "next/server";
 
@@ -34,7 +34,7 @@ export async function GET() {
     try {
         const { data, error } = await supabaseAdmin
             .from("Questions")
-            .select("*");
+            .select("id, question_text, created_at, updated_at, option_a, option_b, option_c, option_d");
         if (error) throw error;
         return NextResponse.json(data);
     } catch (err: unknown) {

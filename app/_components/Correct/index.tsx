@@ -11,7 +11,7 @@ export default function Correct() {
             <h1>正解！</h1>
             <Image src="/images/mark_maru.png" alt="" width={540} height={540} className="w-25 h-25" />
             <br />
-            <button className="btn btn-outline-secondary mx-2" onClick={() => router.push('http://localhost:3000/questions')}>
+            <button className="btn btn-outline-secondary mx-2" onClick={() => router.push('/questions')}>
                 一覧へ
             </button>
         </div>

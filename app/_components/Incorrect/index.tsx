@@ -15,10 +15,10 @@ export default function Correct({id}: Props) {
             <h1 className="fw-bold">不正解！</h1>
             <Image src="/images/mark_batsu.png" alt="" width={540} height={540} className="w-25 h-25"/>
             <br />
-            <button className="btn btn-outline-secondary mx-2" onClick={() => router.push('http://localhost:3000/questions')}>
+            <button className="btn btn-outline-secondary mx-2" onClick={() => router.push('/questions')}>
                 一覧へ
             </button>
-            <button className="btn btn-outline-primary" onClick={() => router.push(`http://localhost:3000/questions/${id}`)}>
+            <button className="btn btn-outline-primary" onClick={() => router.push(`/questions/${id}`)}>
                 再挑戦
             </button>
         </div>

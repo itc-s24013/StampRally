@@ -28,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <nav className="navbar bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand" href="http://localhost:3000/questions">スタンプラリー</a>
+                <a className="navbar-brand" href="./questions">スタンプラリー</a>
             </div>
         </nav>
         <NextAuthProvider>

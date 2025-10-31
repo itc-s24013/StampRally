@@ -47,10 +47,10 @@ export default function AnswerForm({question, userId}: AnswerFormProps) {
             const json = await res.json();
             if (json.success) {
                 if(!json.is_correct) {
-                    router.push('http://localhost:3000/questions/incorrect')
+                    router.push('/questions/incorrect')
                     return;
                 }
-                router.push('http://localhost:3000/questions/correct')
+                router.push('/questions/correct')
             } else {
                 setResult(json.error || "エラーが発生しました");
             }
@@ -77,7 +77,6 @@ export default function AnswerForm({question, userId}: AnswerFormProps) {
                 <label style={{ display: "block", marginBottom: "8px" }}>
                     <input type="radio" name="answer" value="4" checked={selected==="4"} onChange={handleChange} className="form-check-input"/> {question.option_d}
                 </label>
-                <BackListButton onClick={() => router.push('http://localhost:3000/questions')} />
                 <button
                     type="submit"
                     className="btn btn-outline-primary"

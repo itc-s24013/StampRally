@@ -43,7 +43,7 @@ export default function QuestionsPage() {
 
     return (
         <main className="text-center">
-            <h1 className="text-2xl font-bold mb-4">問題一覧</h1>
+            <h1 className="text-2xl font-bold mb-4"><span className="fs-4">縺懊ｓ縺ｶ縺ｧ</span>問題一覧<span className="fs-4">縺ｪ縺ｪ繧ゅｓ</span></h1>
             {questions.map((q) => {
                 const qId = Number(q.id);
                 const foundStamp = stamps.find((s) => s.id === qId);

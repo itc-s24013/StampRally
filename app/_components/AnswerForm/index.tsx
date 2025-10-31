@@ -61,7 +61,7 @@ export default function AnswerForm({question, userId}: AnswerFormProps) {
 
     return (
         <main className="text-center">
-            <h1>問題 {question.id}</h1>
+            <h1>🫟問題 {question.id}🫟</h1>
             <p style={{fontSize:"1.2rem", margin: "1rem 0"}}>{question.question_text}</p>
             <form onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={question.id} />

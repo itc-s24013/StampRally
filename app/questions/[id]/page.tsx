@@ -27,7 +27,7 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
     //     .eq("id", id)
     //     .single();
 
-    const res = await fetch(`http://localhost:3000/api/questions/${id}`)
+    const res = await fetch(`/api/questions/${id}`)
     const data = await res.json().catch(() => null);
 
     if (!res.ok) {

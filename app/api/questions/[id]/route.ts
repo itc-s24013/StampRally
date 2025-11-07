@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     try {
         const { data, error } = await supabaseAdmin
             .from('Questions')
-            .select('*')
+            .select('id, question_text, option_a, option_b, option_c, option_d')
             .eq('id', idNum)
             .single();
 

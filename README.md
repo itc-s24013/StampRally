@@ -1,6 +1,5 @@
 - Stamprally
-  - GitHub
-  - Vercel
+  - [Vercel](https://stamp-rally-nu.vercel.app/)
   - 使用技術
     - TypeScript
     - BootStrap

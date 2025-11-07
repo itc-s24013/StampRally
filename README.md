@@ -16,4 +16,3 @@
   - Google アカウントでログイン
   - 各階数に設置されたパスワードを入力して学校の先生に関するクイズを解く
   - クイズを解いたら問題一覧での表示に色がつく
-  - ![complete](https://github.com/itc-s24013/StampRally/issues/1#issue-3598369548)
